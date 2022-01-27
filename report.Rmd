@@ -1,5 +1,5 @@
 ---
-title: "Movie Lens"
+title: "HarvardX PH125.9x Movie Lens"
 author: "Daniel Yinanc"
 date: "1/23/2022"
 output: pdf_document
