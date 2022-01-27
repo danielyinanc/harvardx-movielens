@@ -1,4 +1,4 @@
-# Begin Provided Code
+##### Begin Course Provided Code
 ##########################################################
 # Create edx set, validation set (final hold-out test set)
 ##########################################################
@@ -56,7 +56,7 @@ edx <- rbind(edx, removed)
 # Remove unnecessary variables from memory
 rm(dl, ratings, movies, test_index, temp, movielens, removed)
 
-# End Provided Code
+##### End course Provided Code
 
 # Finding review year and extracting from the timestamp for validation set
 dates_edx <- as.Date(as.POSIXct(edx$timestamp, origin="1970-01-01"))
@@ -77,7 +77,6 @@ validation_combined <- cbind(validation,years_validation)
 validation_combined <- rename(validation_combined, years = years_validation)
 
 # Loss Function as RMSE
-# 
 RMSE <- function(true_ratings, predicted_ratings){
   sqrt(mean((true_ratings - predicted_ratings)^2))
 }
@@ -86,7 +85,7 @@ RMSE <- function(true_ratings, predicted_ratings){
 # Training set mean rating
 mu <- mean(edx_combined$rating)
 
-# Final Model accepting lambda as variable
+# Final Model accepting lambda as variable in function form
 final_model <- function(l) {
   
   # calculate bias term for movie
@@ -125,10 +124,23 @@ final_model <- function(l) {
     mutate(pred = mu_hat + b_t + b_g + b_i + b_u) %>%
     pull(pred) 
   
-  # Calculate RMSE between predictions and validation set ratings
-  return(RMSE(predicted_ratings, validation_combined$rating))
+  # Put calculated RMSE between predictions and validation set ratings
+  # and predictions into a list
+  ret_list <- list("rmse" = RMSE(predicted_ratings, validation_combined$rating), "pred"=predicted_ratings)
+  
+  # Return both RMSE and predictions as a list
+  return(ret_list)
 }
 
+# Produce both predictions and results
+final_results <- final_model(5.25)
+
+# Assign Predictions to predictions variable
+predictions <- final_results$pred
+
+# Print RMSE for the model
 # RMSE for the final model is 0.8644092
-final_rmse <- final_model(5.25)
+final_rmse <- final_results$rmse
 final_rmse
+
+
